@@ -1,0 +1,2 @@
+2020-06-10 14:49:21.888 +03:00 [Debug] Request Method: GET - Request Path: /products -  Response: 200: {"name":"ads","price":12.0,"isSuccess":true}- ElapsedTime: 572
+2020-06-10 14:49:59.299 +03:00 [Debug] Request Method: GET - Request Path: /products -  Response: 200: {"name":"ads","price":12.0,"isSuccess":true}- ElapsedTime: 572
