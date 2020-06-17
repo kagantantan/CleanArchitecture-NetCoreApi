@@ -5,11 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Idil.Boilerplate.Core.Interfaces;
+using Idil.Boilerplate.Core.Interfaces.Repositories;
+using Idil.Boilerplate.Core.Interfaces.Repositories.Products;
 using Idil.Boilerplate.Core.Services.Products.Queries;
 using Idil.Boilerplate.Infrastructure.Middleware.ExceptionHandling;
 using Idil.Boilerplate.Infrastructure.Middleware.RequestResponseHandling;
 using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer;
 using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer.Repositories;
+using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer.Repositories.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -73,6 +76,7 @@ namespace Idil.Boilerplate.AspNetCoreApi
 
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IProductRepository,EfProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

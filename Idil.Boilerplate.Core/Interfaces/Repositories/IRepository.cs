@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Idil.Boilerplate.Core.Models;
 
-namespace Idil.Boilerplate.Core.Interfaces
+namespace Idil.Boilerplate.Core.Interfaces.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
