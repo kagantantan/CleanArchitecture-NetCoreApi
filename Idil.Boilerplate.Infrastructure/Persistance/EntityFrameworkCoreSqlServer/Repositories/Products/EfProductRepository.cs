@@ -25,10 +25,5 @@ namespace Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServ
                 .Take(pageSize)
                 .ToListAsync();
         }
-
-        public async Task<int> GetProductCount()
-        {
-            return await _context.Products.CountAsync();
-        }
     }
 }

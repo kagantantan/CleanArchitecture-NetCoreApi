@@ -26,7 +26,7 @@ namespace Idil.Boilerplate.Core.Services.Products.Queries
 
             var allProduct = await _repository.GetAll(request.PageSize, request.PageNumber);
 
-            response.TotalRecords = await _repository.GetProductCount();
+            response.TotalRecords = allProduct.Count;
 
             var totalPages = ((double)response.TotalRecords / (double)request.PageSize);
             response.TotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
