@@ -15,7 +15,7 @@ namespace Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServ
     /// https://blogs.msdn.microsoft.com/pfxteam/2012/04/13/should-i-expose-synchronous-wrappers-for-asynchronous-methods/
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class EfRepository<T> : IRepository<T> where T : BaseEntity
+    public class EfRepository<T> : IRepository<T> where T : class
     {
         protected readonly ApplicationContext _dbContext;
 
@@ -24,7 +24,7 @@ namespace Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServ
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(long id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }

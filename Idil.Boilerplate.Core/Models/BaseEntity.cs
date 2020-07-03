@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Idil.Boilerplate.Core.Models
 {
-    public class BaseEntity
+    public abstract class BaseEntity<T> 
     {
-        public long Id { get; set; }
+        public T Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public DateTime? DeletedOn { get; set; }

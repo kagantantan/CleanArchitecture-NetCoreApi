@@ -22,7 +22,6 @@ namespace Idil.Boilerplate.Core.Services.Products.Queries
         public async Task<BaseResponseDto<List<ProductDto>>> Handle(ProductRequest request, CancellationToken cancellationToken)
         {
             var response = new BaseResponseDto<List<ProductDto>>(new List<ProductDto>());
-
             var allProduct = await _repository.ListAllAsync();
             foreach (var product in allProduct)
             {
