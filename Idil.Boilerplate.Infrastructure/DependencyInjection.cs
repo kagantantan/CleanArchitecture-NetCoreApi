@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using Idil.Boilerplate.Core.Interfaces.Repositories;
+﻿using Idil.Boilerplate.Core.Interfaces.Repositories;
 using Idil.Boilerplate.Core.Interfaces.Repositories.Products;
 using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer;
 using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer.Repositories;

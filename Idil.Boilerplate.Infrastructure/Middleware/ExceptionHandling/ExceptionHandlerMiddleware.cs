@@ -42,7 +42,7 @@ namespace Idil.Boilerplate.Infrastructure.Middleware.ExceptionHandling
             _logger.LogError("Exception caught {@exception}", exception);
 
             //var code = HttpStatusCode.InternalServerError;
-            var code = HttpStatusCode.OK; //<-- we do not respond with "InternalServerError" - but rather with isSuccess = false with exception message (this also avoids issues with OpenAPI/Swagger throwing an exception due to server response codes).
+            var code = HttpStatusCode.InternalServerError; //<-- we do not respond with "InternalServerError" - but rather with isSuccess = false with exception message (this also avoids issues with OpenAPI/Swagger throwing an exception due to server response codes).
                                           //var result = JsonConvert.SerializeObject(exception, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore } );
             var result = JsonConvert.SerializeObject(new { IsSuccess = false, exceptionType = exception.GetType().ToString(), message = exception.Message });
 

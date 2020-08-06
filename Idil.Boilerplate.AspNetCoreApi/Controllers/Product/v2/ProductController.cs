@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Idil.Boilerplate.AspNetCoreApi.Controllers
+namespace Idil.Boilerplate.AspNetCoreApi.Controllers.Product.v2
 {
-    public class ProductsController : BaseApiController
+    [ApiVersion("2.0")]
+    public class ProductController : BaseApiController
     {
         /// <summary>
         /// Get All Products

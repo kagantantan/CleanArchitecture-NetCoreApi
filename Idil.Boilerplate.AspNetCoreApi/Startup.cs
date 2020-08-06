@@ -1,34 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Idil.Boilerplate.Core;
-using Idil.Boilerplate.Core.Interfaces;
-using Idil.Boilerplate.Core.Interfaces.Repositories;
-using Idil.Boilerplate.Core.Interfaces.Repositories.Products;
-using Idil.Boilerplate.Core.Services.Products.Queries;
+﻿using Idil.Boilerplate.Core;
 using Idil.Boilerplate.Infrastructure;
-using Idil.Boilerplate.Infrastructure.Middleware.ExceptionHandling;
-using Idil.Boilerplate.Infrastructure.Middleware.RequestResponseHandling;
-using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer;
-using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer.Repositories;
-using Idil.Boilerplate.Infrastructure.Persistance.EntityFrameworkCoreSqlServer.Repositories.Products;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
+using System;
+using Idil.Boilerplate.Infrastructure.Middleware.ExceptionHandling;
+using Idil.Boilerplate.Infrastructure.Middleware.RequestResponseHandling;
 
 namespace Idil.Boilerplate.AspNetCoreApi
 {
@@ -44,45 +29,74 @@ namespace Idil.Boilerplate.AspNetCoreApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers();
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                options.GroupNameFormat = "'v'VVV";
+
+                // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                // can also be used to control the format of the API version in route templates
+                options.SubstituteApiVersionInUrl = true;
+            });
+
+            services.AddApiVersioning(config =>
+            {
+                // Specify the default API Version as 1.0
+                config.DefaultApiVersion = new ApiVersion(1, 0);
+                // If the client hasn't specified the API version in the request, use the default API version number 
+                config.AssumeDefaultVersionWhenUnspecified = true;
+                // Advertise the API versions supported for the particular endpoint
+                config.ReportApiVersions = true;
+
+                config.ApiVersionReader = ApiVersionReader.Combine(
+                    new QueryStringApiVersionReader("api-version"));
+            });
 
             services.AddPersistence(Configuration);
             services.AddLogging(Configuration);
             services.AddApplication();
 
             services.AddCoreDependencies();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("idil.Boilerplate.Api", new OpenApiInfo { Title = "idil.Boilerplate.Api", Version = "v1" });
-            });
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
                 app.UseSwagger();
-
-                app.UseSwaggerUI(c =>
-                {
-                    c.RoutePrefix = string.Empty;
-                    c.SwaggerEndpoint("/swagger/idil.Boilerplate.Api/swagger.json", "idil.Boilerplate.Api V1");
-                });
-            }
-            else
-            {
-                app.UseHsts();
+                app.UseSwaggerUI(
+                    options =>
+                    {
+                        options.RoutePrefix = string.Empty;
+                        // build a swagger endpoint for each discovered API version
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                        }
+                    });
             }
 
             app.UseExceptionHandlerMiddleware();
             app.UseRequestResponseLoggingMiddleware();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
         }
     }
 }

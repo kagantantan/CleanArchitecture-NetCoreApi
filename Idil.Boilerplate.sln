@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1062
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Idil.Boilerplate.AspNetCoreApi", "Idil.Boilerplate.AspNetCoreApi\Idil.Boilerplate.AspNetCoreApi.csproj", "{8F8D78E6-F6D2-4472-A01B-FFD0AF4F7D50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Idil.Boilerplate.Core", "Idil.Boilerplate.Core\Idil.Boilerplate.Core.csproj", "{7FBBC4A0-453E-498B-975D-770E671F3FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idil.Boilerplate.Infrastructure", "Idil.Boilerplate.Infrastructure\Idil.Boilerplate.Infrastructure.csproj", "{DCAEC9AB-A19C-45AC-A409-B796ABBA0724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Idil.Boilerplate.Infrastructure", "Idil.Boilerplate.Infrastructure\Idil.Boilerplate.Infrastructure.csproj", "{DCAEC9AB-A19C-45AC-A409-B796ABBA0724}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
